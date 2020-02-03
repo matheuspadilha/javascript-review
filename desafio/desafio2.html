@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Desafio 2</title>
+</head>
+<body>
+  <div id="app">
+    <ul>
+
+    </ul>
+  
+    <input type="text" name="user">
+    <button onclick="">Adicionar</button>
+  </div>
+<script>
+
+// function checaIdade(idade) {
+// // Retornar uma promise
+// return new Promise(function(resolve, reject) {
+//   var xhr = new XMLHttpRequest();
+
+//   xhr.open('GET', 'https://api.github.com/users/matheuspadilha');
+//   xhr.send(null);
+
+//   xhr.onreadystatechange = function () {
+//     if(xhr.readyState === 4) {
+//       if(xhr.status === 200){
+//         resolve(JSON.parse(xhr.responseText));
+//       } else {
+//         reject('Erro na requisição');
+//       }
+//     }
+//   }
+// });
+
+// }
+// checaIdade(20)
+// .then(function() {
+// console.log("Maior que 18");
+// })
+// .catch(function() {
+// console.log("Menor que 18");
+// });
+
+function buscarRepositories(user) {
+  return new Promise(function(resolve, reject) {
+  var xhr = new XMLHttpRequest();
+
+  xhr.open('GET', `https://api.github.com/users/${user}/repos`);
+  xhr.send(null);
+  loading();
+  xhr.onreadystatechange = function () {
+    if(xhr.readyState === 4) {
+      if(xhr.status === 200){
+        resolve(JSON.parse(xhr.responseText));
+      } else {
+        reject('Erro na requisição');
+      }
+    }
+  }
+});
+}
+
+let listElement = document.querySelector('#app ul');
+let inputElement = document.querySelector('#app input');
+let buttonElement = document.querySelector('#app button');
+
+function renderRepositories(params) {
+  listElement.innerHTML = '';
+
+  for(param of params) {
+    let itemElement = document.createElement('li');
+    let itemName = document.createTextNode(param.name);
+
+    itemElement.appendChild(itemName);
+    listElement.appendChild(itemElement);
+  }
+}
+
+function loading() {
+  loadingText = [{name: "Carregando"}];
+
+  renderRepositories(loadingText);
+}
+
+function buscarUser() {
+  let itemText = inputElement.value;
+
+  buscarRepositories(itemText)
+  .then(function(event) {
+    renderRepositories(event);
+  })
+  .catch(function() {
+    listElement.innerHTML = '';
+    alert('Erro 404')
+  })
+}
+buttonElement.onclick = buscarUser;
+
+
+
+</script>
+</body>
+</html>

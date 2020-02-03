@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Desafio 1</title>
+</head>
+<body>
+  <div class="app">
+    <div class="list">
+      <ul>
+
+      </ul>
+      <input type="text" name="name">
+      <button onClick="adicionar()">Adicionar</button>
+    </div>
+    <button onclick="createSquare()">Criar quadrado</button>
+    <div class="box">
+
+    </div>
+  </div>
+  <script>
+    function createSquare() {
+      let boxElement = document.createElement('div');
+      boxElement.style.width = '100px';
+      boxElement.style.height = '100px';
+      boxElement.style.padding = '5px';
+      boxElement.style.margin = '5px';
+      boxElement.style.backgroundColor = '#f00';
+
+      let containerElement = document.querySelector('.box');
+      boxElement.setAttribute('onmouseover', 'changeColor(event)');
+      containerElement.appendChild(boxElement);
+    }
+
+    function changeColor(event) {
+      event.target.style.backgroundColor = this.getRandomColor();
+    }
+
+    function getRandomColor() {
+      let letters = '0123456789ABCDEF';
+      let color = '#';
+      for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
+
+    var nomes = ["Diego", "Gabriel", "Lucas"];
+    function createListNames(arr) {
+      let containerElement = document.querySelector('.list ul');
+      for (let i = 0; i < arr.length; i++) {
+        let element = document.createElement('li');
+        let textElement = document.createTextNode(arr[i]);
+        element.appendChild(textElement);
+        containerElement.appendChild(element);
+      }
+    }  
+
+    createListNames(nomes);
+
+    function adicionar() {
+      let inputElement = document.querySelector('input[name=name]');
+      this.createListNames([inputElement.value]);
+      inputElement.value = '';
+    }
+  </script>
+</body>
+</html>
